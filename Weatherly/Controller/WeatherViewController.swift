@@ -6,10 +6,11 @@
 //
 // UITextFieldDelegate allows current VC to manage UITextField
 
+
 import UIKit
 
 class WeatherViewController: UIViewController, UITextFieldDelegate {
-
+    
     @IBOutlet weak var searchCityTextField: UITextField!
     @IBOutlet weak var cityUILabel: UILabel!
     @IBOutlet weak var dateUILabel: UILabel!
@@ -17,6 +18,8 @@ class WeatherViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var temperatureUILabel: UILabel!
     @IBOutlet weak var conditionUILabel: UILabel!
     
+    //new weather manager
+    var weatherDataManager = WeatherDataManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,27 +27,22 @@ class WeatherViewController: UIViewController, UITextFieldDelegate {
         // Notify the VC of the user's interactions with UITextField
         searchCityTextField.delegate = self
     }
-
+    
     @IBAction func searchPressed(_ sender: UIButton) {
         //dismiss keyboard
         searchCityTextField.endEditing(true)
-        
-        print(searchCityTextField.text!)
-    
     }
     
     // when user press the "go" button on keyboard
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         //dismiss keyboard
-        textField.endEditing(true)
-        
-        print(searchCityTextField.text!)
+        searchCityTextField.endEditing(true)
         return true
     }
     
     //
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        if textField.text == ""{
+        if textField.text != ""{
             return true
         } else{
             textField.placeholder = "Enter the City..."
@@ -54,10 +52,12 @@ class WeatherViewController: UIViewController, UITextFieldDelegate {
     
     // clear the text field when user done with typing and press search
     func textFieldDidEndEditing(_ textField: UITextField) {
+        if let city = searchCityTextField.text{
+            weatherDataManager.fetchWeather(cityName: city)
+        }
         
-        
-        textField.text = ""
+        searchCityTextField.text = ""
     }
-  
+    
 }
 
