@@ -19,7 +19,9 @@ import Foundation
 
 struct WeatherDataManager{
     
-    let weatherURL = "https://api.openweathermap.org/data/2.5/weather?appid=eb3eeee18ffb66aafe75b1d5174e3919&units=metric"
+    
+    
+    let weatherURL = "https://api.openweathermap.org/data/2.5/weather?appid=\(PrivateKeys().OpenWeatherMapKey)&units=metric"
     
     
     func fetchWeather(cityName: String) {
@@ -35,29 +37,42 @@ struct WeatherDataManager{
             // 2. create URL session (downloading or uploading data)
             let session = URLSession(configuration: .default)
             
-            // 3. create task - give URL a task (to retrive content of url
-            let task = session.dataTask(with: url, completionHandler: handler(data: response: error: ))
+            // 3. create task - give URL a task (to retrive content of url - closure
+            let task = session.dataTask(with: url) { (data, response, error) in
+                
+                // if there are errors
+                if error != nil{
+                    print(error!)
+                    // empty return just means exit
+                    return
+                }
+                
+                // if there is no errors
+                if let safeData = data{
+                    // for encoding text from website use .utf8
+                    // let dataString = String(data: safeData, encoding: .utf8)
+                    
+                    // JSON: Javascript Object Notation
+                    parseJSON(weatherData: safeData)
+                }
+            }
             
             // 4. start the task (hit enter in search bar)
             task.resume()
         }
-        
-        
     }
     
-    func handler(data: Data?, response: URLResponse?, error: Error?) -> Void{
-        // if there are errors
-        if error != nil{
-            print(error!)
-            // empty return just means exit
-            return
-        }
-        
-        // if there is no errors
-        if let safeData = data{
-            // for encoding text from website use .utf8
-            let dataString = String(data: safeData, encoding: .utf8)
-            print(dataString)
+    func parseJSON(weatherData: Data){
+        //object to decode json
+        let decoder = JSONDecoder()
+        // two things: decodable Type and a data to decode
+        // try and throw : if sth goes wrong
+        do {
+            let decodedData = try decoder.decode(WeatherData.self, from: weatherData)
+            print(decodedData.weather[0].description)
+        } catch{
+            print(error)
         }
     }
+    
 }

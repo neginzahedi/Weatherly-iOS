@@ -14,6 +14,8 @@
 		0F4E69392867BA7F0091C5EF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0F4E69372867BA7F0091C5EF /* Main.storyboard */; };
 		0F4E693B2867BA800091C5EF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0F4E693A2867BA800091C5EF /* Assets.xcassets */; };
 		0F4E693E2867BA800091C5EF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0F4E693C2867BA800091C5EF /* LaunchScreen.storyboard */; };
+		0FC6D23B2876311400E48261 /* PrivateKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC6D23A2876311400E48261 /* PrivateKeys.swift */; };
+		0FC6D23D2876328200E48261 /* WeatherData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FC6D23C2876328200E48261 /* WeatherData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +28,8 @@
 		0F4E693A2867BA800091C5EF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0F4E693D2867BA800091C5EF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0F4E693F2867BA800091C5EF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0FC6D23A2876311400E48261 /* PrivateKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateKeys.swift; sourceTree = "<group>"; };
+		0FC6D23C2876328200E48261 /* WeatherData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +69,7 @@
 				0F4E69332867BA7F0091C5EF /* SceneDelegate.swift */,
 				0F4E693A2867BA800091C5EF /* Assets.xcassets */,
 				0F4E693F2867BA800091C5EF /* Info.plist */,
+				0FC6D23A2876311400E48261 /* PrivateKeys.swift */,
 			);
 			path = Weatherly;
 			sourceTree = "<group>";
@@ -73,6 +78,7 @@
 			isa = PBXGroup;
 			children = (
 				0F44A488286DFBF70070B9E3 /* WeatherDataManager.swift */,
+				0FC6D23C2876328200E48261 /* WeatherData.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -167,7 +173,9 @@
 			files = (
 				0F44A489286DFBF70070B9E3 /* WeatherDataManager.swift in Sources */,
 				0F4E69362867BA7F0091C5EF /* WeatherViewController.swift in Sources */,
+				0FC6D23B2876311400E48261 /* PrivateKeys.swift in Sources */,
 				0F4E69322867BA7F0091C5EF /* AppDelegate.swift in Sources */,
+				0FC6D23D2876328200E48261 /* WeatherData.swift in Sources */,
 				0F4E69342867BA7F0091C5EF /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
