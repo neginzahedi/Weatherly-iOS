@@ -9,7 +9,9 @@
 
 import UIKit
 
-class WeatherViewController: UIViewController, UITextFieldDelegate {
+class WeatherViewController: UIViewController, UITextFieldDelegate, WeatherDataManagerDelegate {
+  
+    
     
     @IBOutlet weak var searchCityTextField: UITextField!
     @IBOutlet weak var cityUILabel: UILabel!
@@ -23,6 +25,9 @@ class WeatherViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+    
+        weatherDataManager.delegate = self
         
         // Notify the VC of the user's interactions with UITextField
         searchCityTextField.delegate = self
@@ -57,6 +62,14 @@ class WeatherViewController: UIViewController, UITextFieldDelegate {
         }
         
         searchCityTextField.text = ""
+    }
+    
+    // from WeatherDataManagerDelegate protocol
+    func didUpdateWeather(weather: WeatherCityModel) {
+        print(weather.temperature)
+        cityUILabel.text = weather.city
+        temperatureUILabel.text = "\(weather.temperature)"
+        conditionUILabel.text = weather.decription
     }
     
 }
