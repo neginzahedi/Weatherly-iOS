@@ -10,8 +10,6 @@
 import UIKit
 
 class WeatherViewController: UIViewController, UITextFieldDelegate, WeatherDataManagerDelegate {
-  
-    
     
     @IBOutlet weak var searchCityTextField: UITextField!
     @IBOutlet weak var cityUILabel: UILabel!
@@ -19,14 +17,17 @@ class WeatherViewController: UIViewController, UITextFieldDelegate, WeatherDataM
     @IBOutlet weak var weatherIconImageView: UIImageView!
     @IBOutlet weak var temperatureUILabel: UILabel!
     @IBOutlet weak var conditionUILabel: UILabel!
+    @IBOutlet weak var feelsUILabel: UILabel!
+    @IBOutlet weak var humidityUILabel: UILabel!
+    @IBOutlet weak var pressureUILabel: UILabel!
     
     //new weather manager
-    var weatherDataManager = WeatherDataManager()
+    var weatherDataManager = WeatherManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-    
+        
         weatherDataManager.delegate = self
         
         // Notify the VC of the user's interactions with UITextField
@@ -65,11 +66,24 @@ class WeatherViewController: UIViewController, UITextFieldDelegate, WeatherDataM
     }
     
     // from WeatherDataManagerDelegate protocol
-    func didUpdateWeather(weather: WeatherCityModel) {
-        print(weather.temperature)
-        cityUILabel.text = weather.city
-        temperatureUILabel.text = "\(weather.temperature)"
-        conditionUILabel.text = weather.decription
+    func didUpdateWeather(_ weatherManager: WeatherManager, weather: WeatherModel) {
+        // we can not easily set text label to the data because of threads, we are doing the networking and execution in the background and we need to dispatch the call to update uilabel to the main thread
+        
+        DispatchQueue.main.async {
+            self.cityUILabel.text = weather.city
+            self.temperatureUILabel.text = weather.tempToString
+            self.conditionUILabel.text = weather.condition
+            self.weatherIconImageView.image = UIImage(imageLiteralResourceName: weather.conditionIcon)
+            self.humidityUILabel.text = "\(weather.humidity)"
+            self.pressureUILabel.text = "\(weather.pressure)"
+            self.feelsUILabel.text = "\(weather.feelslike)"
+        }
+        
+    }
+    
+    // if any errors happen
+    func didFailWithError(error: Error) {
+        print(error)
     }
     
 }

@@ -1,5 +1,5 @@
 //
-//  WeatherCityModel.swift
+//  WeatherModel.swift
 //  Weatherly
 //
 //  Created by Negin Zahedi on 2022-07-07.
@@ -10,12 +10,16 @@
 
 import Foundation
 
-struct WeatherCityModel {
+struct WeatherModel {
     
     let city: String
     let weatherIcon: Int
     let temperature: Double
     let decription: String
+    let condition: String
+    let humidity: Double
+    let pressure: Double
+    let feelslike: Double
     
     // computed property
     var tempToString: String {
@@ -26,19 +30,19 @@ struct WeatherCityModel {
     var conditionIcon: String {
         switch weatherIcon {
         case 200...232:
-            return "bolt"
+            return "zap"
         case 300...321:
-            return "drizzle"
+            return "wind"
         case 500...531:
             return "rain"
         case 600...622:
             return "fog"
         case 701...781:
-            return "fog"
+            return "cloud"
         case 800:
             return "sun"
         case 801...804:
-            return "bolt"
+            return "zap"
         default:
             return "cloud"
         }

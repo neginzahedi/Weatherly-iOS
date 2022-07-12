@@ -1,5 +1,5 @@
 //
-//  WeatherDataManager.swift
+//  WeatherManager.swift
 //  Weatherly
 //
 //  Created by Negin Zahedi on 2022-06-30.
@@ -14,12 +14,13 @@
 //
 
 protocol WeatherDataManagerDelegate{
-    func didUpdateWeather(weather: WeatherCityModel)
+    func didUpdateWeather(_ weatherManager: WeatherManager, weather: WeatherModel)
+    func didFailWithError(error: Error)
 }
 
 import Foundation
 
-struct WeatherDataManager{
+struct WeatherManager{
     
     // it means if there is a delegate then they can use the didUpdateWeather()
     var delegate: WeatherDataManagerDelegate?
@@ -30,10 +31,10 @@ struct WeatherDataManager{
     func fetchWeather(cityName: String) {
         let urlString = "\(weatherURL)&q=\(cityName)"
         print(urlString)
-        performRequest(urlString: urlString)
+        performRequest(urlString)
     }
     
-    func performRequest(urlString: String){
+    func performRequest(_ urlString: String){
         // 1. create URL : location of the resource (can be on local or remote server)
         if let url = URL(string: urlString){
             
@@ -45,7 +46,7 @@ struct WeatherDataManager{
                 
                 // if there are errors
                 if error != nil{
-                    print(error!)
+                    self.delegate?.didFailWithError(error: error!)
                     // empty return just means exit
                     return
                 }
@@ -56,10 +57,10 @@ struct WeatherDataManager{
                     // let dataString = String(data: safeData, encoding: .utf8)
                     
                     // JSON: Javascript Object Notation
-                    if let weather = parseJSON(weatherData: safeData){
+                    if let weather = self.parseJSON(safeData){
                         
                         // self means the delegate is in current class
-                        self.delegate?.didUpdateWeather(weather: weather)
+                        self.delegate?.didUpdateWeather(self, weather: weather)
                     }
                 }
             }
@@ -70,7 +71,7 @@ struct WeatherDataManager{
     }
     
     // ? optional because it can be nil
-    func parseJSON(weatherData: Data)->WeatherCityModel?{
+    func parseJSON(_ weatherData: Data)->WeatherModel?{
         //object to decode json
         let decoder = JSONDecoder()
         // two things: decodable Type and a data to decode
@@ -83,15 +84,18 @@ struct WeatherDataManager{
             let temp = decodedData.main.temp
             let name = decodedData.name
             let description = decodedData.weather.description
-            let weatherCity = WeatherCityModel(city: name, weatherIcon: icon, temperature: temp, decription: description)
+            let condition = decodedData.weather[0].main
+            let humidity = decodedData.main.humidity
+            let pressure = decodedData.main.pressure
+            let feels = decodedData.main.feels_like
+            
+            let weatherCity = WeatherModel(city: name, weatherIcon: icon, temperature: temp, decription: description, condition: condition, humidity: humidity,pressure: pressure,feelslike: feels)
             return weatherCity
             
         } catch{
-            print(error)
+            self.delegate?.didFailWithError(error: error)
             return nil
         }
     }
-    
-    
     
 }
